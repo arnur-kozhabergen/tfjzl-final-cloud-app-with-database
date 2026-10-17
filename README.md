@@ -1,4 +1,17 @@
 
+## Assessment feature implementation
+
+This educational fork adds Question, Choice and Submission models, inline admin editing,
+an enrolled-user exam form, POST-only submission and owner-only result pages. Multiple-choice
+grading requires the exact correct set; selecting an additional incorrect choice earns no points.
+The provided template's pass threshold remains greater than 80 percent.
+
+Run `python manage.py migrate`, then `python manage.py test onlinecourse.test_assessment`.
+The eight tests use Django's in-process client, including successful and failed exams,
+partial and extra selections, enrollment checks and cross-user result isolation.
+No public production deployment is claimed. The starter's dependencies and development
+settings are for the course lab. Codex assisted with implementation and verification.
+
 **General Notes**
 
 An `onlinecourse` app has already been provided in this repo upon which you will be adding a new assesement feature.
