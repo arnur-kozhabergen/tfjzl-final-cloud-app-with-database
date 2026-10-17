@@ -50,7 +50,34 @@
                     </div>
                 {% endfor %}
             </div>
-            <!-- Course detail template changes go here -->
+            {% if user.is_authenticated and is_enrolled %}
+            <button class="btn btn-primary my-4" type="button" data-toggle="collapse" data-target="#exam" aria-expanded="false" aria-controls="exam">Start Exam</button>
+            <div class="collapse" id="exam">
+                <h3>Course exam</h3>
+                <p>Select all correct choices for each question.</p>
+                <form action="{% url 'onlinecourse:submit' course.id %}" method="post">
+                    {% csrf_token %}
+                    {% for question in course.question_set.all %}
+                    <fieldset class="card mb-3">
+                        <legend class="card-header h5">{{ forloop.counter }}. {{ question.content }} <small>({{ question.grade }} points)</small></legend>
+                        <div class="card-body">
+                        {% for choice in question.choice_set.all %}
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="choice-{{ choice.id }}" name="choice_{{ choice.id }}" value="{{ choice.id }}">
+                                <label class="form-check-label" for="choice-{{ choice.id }}">{{ choice.content }}</label>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </fieldset>
+                    {% endfor %}
+                    <button class="btn btn-success mb-4" type="submit">Submit Exam</button>
+                </form>
+            </div>
+            {% elif user.is_authenticated %}
+            <a class="btn btn-primary my-4" href="{% url 'onlinecourse:enroll' course.id %}">Enroll to take the exam</a>
+            {% else %}
+            <p class="alert alert-info mt-4">Please log in and enroll to take the exam.</p>
+            {% endif %}
     </div>
 </body>
 </html>
